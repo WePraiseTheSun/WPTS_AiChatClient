@@ -138,7 +138,7 @@ namespace AiChat.Control
         // Bridge: JS → C#
         // =====================================================================
 
-        private void OnWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
+        private async void OnWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
         {
             string json;
             try { json = e.WebMessageAsJson; }
@@ -150,7 +150,7 @@ namespace AiChat.Control
                 return;
             }
 
-            _ = DispatchAsync(cmd);
+            this.BeginInvoke(new Action(async () => await DispatchAsync(cmd)));
         }
 
         private async Task DispatchAsync(BridgeCommand cmd)
